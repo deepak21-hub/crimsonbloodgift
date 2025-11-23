@@ -23,6 +23,10 @@ export default {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
+        blood: {
+          DEFAULT: "hsl(var(--blood))",
+          dark: "hsl(var(--blood-dark))",
+        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
@@ -47,16 +51,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
+      },
+      fontFamily: {
+        gothic: ['Cinzel', 'serif'],
+        cursive: ['Dancing Script', 'cursive'],
+        serif: ['Crimson Text', 'serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -80,10 +79,33 @@ export default {
             height: "0",
           },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px) translateX(0px)" },
+          "25%": { transform: "translateY(-20px) translateX(10px)" },
+          "50%": { transform: "translateY(-10px) translateX(-10px)" },
+          "75%": { transform: "translateY(-30px) translateX(5px)" },
+        },
+        ember: {
+          "0%": { transform: "translateY(0) scale(1)", opacity: "1" },
+          "100%": { transform: "translateY(-100vh) scale(0.5)", opacity: "0" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.6", filter: "brightness(1)" },
+          "50%": { opacity: "1", filter: "brightness(1.3)" },
+        },
+        heartbeat: {
+          "0%, 100%": { transform: "scale(1)" },
+          "10%, 30%": { transform: "scale(1.05)" },
+          "20%, 40%": { transform: "scale(0.95)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        float: "float 6s ease-in-out infinite",
+        ember: "ember linear forwards",
+        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
+        heartbeat: "heartbeat 2s ease-in-out infinite",
       },
     },
   },
