@@ -5,6 +5,7 @@ import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { PageTransition } from '@/components/PageTransition';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import bloodRose from '@/assets/blood-rose.jpg';
 
 const PUZZLE_SIZE = 3;
 const TOTAL_PIECES = PUZZLE_SIZE * PUZZLE_SIZE;
@@ -33,6 +34,8 @@ export const Puzzle = () => {
   }, [pieces, isComplete]);
 
   const handlePieceClick = (index: number) => {
+    if (isComplete) return;
+    
     if (selectedPiece === null) {
       setSelectedPiece(index);
     } else {
@@ -45,6 +48,19 @@ export const Puzzle = () => {
       setPieces(newPieces);
       setSelectedPiece(null);
     }
+  };
+
+  const getPieceStyle = (pieceValue: number) => {
+    const row = Math.floor(pieceValue / PUZZLE_SIZE);
+    const col = pieceValue % PUZZLE_SIZE;
+    const percentX = (col * 100) / (PUZZLE_SIZE - 1);
+    const percentY = (row * 100) / (PUZZLE_SIZE - 1);
+
+    return {
+      backgroundImage: `url(${bloodRose})`,
+      backgroundSize: '300%',
+      backgroundPosition: `${percentX}% ${percentY}%`,
+    };
   };
 
   return (
@@ -67,6 +83,20 @@ export const Puzzle = () => {
           </p>
         </motion.div>
 
+        {/* Preview of complete image */}
+        {!isComplete && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="relative z-10 mb-6"
+          >
+            <p className="font-cursive text-sm text-muted-foreground mb-2">Preview:</p>
+            <div className="w-32 h-32 rounded-lg border border-primary/30 overflow-hidden opacity-40">
+              <img src={bloodRose} alt="Blood Rose Preview" className="w-full h-full object-cover" />
+            </div>
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -74,14 +104,12 @@ export const Puzzle = () => {
           className="relative z-10 mb-12"
         >
           <div
-            className="grid gap-2 p-4 bg-card/80 backdrop-blur-md border-2 border-primary rounded-lg deep-shadow"
+            className="grid gap-1 p-4 bg-card/90 backdrop-blur-md border-2 border-primary rounded-lg deep-shadow"
             style={{
               gridTemplateColumns: `repeat(${PUZZLE_SIZE}, 1fr)`,
             }}
           >
             {pieces.map((piece, index) => {
-              const row = Math.floor(piece / PUZZLE_SIZE);
-              const col = piece % PUZZLE_SIZE;
               const isSelected = selectedPiece === index;
               const isCorrect = piece === index;
 
@@ -89,38 +117,38 @@ export const Puzzle = () => {
                 <motion.button
                   key={index}
                   onClick={() => handlePieceClick(index)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`w-24 h-24 md:w-32 md:h-32 rounded-lg border-2 transition-all duration-300 ${
+                  whileHover={!isComplete ? { scale: 1.05 } : {}}
+                  whileTap={!isComplete ? { scale: 0.95 } : {}}
+                  disabled={isComplete}
+                  className={`w-24 h-24 md:w-32 md:h-32 rounded-md border-2 transition-all duration-300 overflow-hidden relative ${
                     isSelected
-                      ? 'border-blood ring-4 ring-blood/50'
+                      ? 'border-blood ring-4 ring-blood/50 z-10'
                       : isComplete || isCorrect
-                      ? 'border-primary'
-                      : 'border-muted'
+                      ? 'border-primary/50'
+                      : 'border-muted hover:border-primary'
                   }`}
                   style={{
-                    background: `
-                      radial-gradient(circle at ${50 + col * 20}% ${50 + row * 20}%, 
-                      hsl(0 100% 40%) 0%, 
-                      hsl(0 85% 25%) 30%, 
-                      hsl(0 0% 10%) 60%)
-                    `,
+                    ...getPieceStyle(piece),
                     boxShadow: isSelected
                       ? '0 0 30px hsl(0 100% 40% / 0.6)'
-                      : isComplete || isCorrect
+                      : isComplete
                       ? '0 0 15px hsl(0 85% 35% / 0.4)'
                       : 'none',
+                    cursor: isComplete ? 'default' : 'pointer',
                   }}
                 >
+                  {isSelected && !isComplete && (
+                    <div className="absolute inset-0 bg-blood/30 flex items-center justify-center">
+                      <span className="text-white font-gothic text-2xl">✓</span>
+                    </div>
+                  )}
                   {isComplete && (
                     <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="text-4xl"
-                    >
-                      🌹
-                    </motion.div>
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="absolute inset-0 bg-gradient-to-br from-blood/20 via-transparent to-transparent"
+                    />
                   )}
                 </motion.button>
               );
@@ -132,8 +160,16 @@ export const Puzzle = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative z-10 flex flex-col gap-4"
+            className="relative z-10 flex flex-col gap-4 items-center"
           >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', bounce: 0.5 }}
+              className="text-6xl mb-4"
+            >
+              🌹
+            </motion.div>
             <Button
               onClick={() => navigate('/gift')}
               size="lg"
