@@ -6,52 +6,169 @@ import { PageTransition } from '@/components/PageTransition';
 import { Button } from '@/components/ui/button';
 
 const storyStages = [
+  // Chapter 1
   {
-    text: "Under the Blood Moon, the Alpha stepped from the shadows. Wild, fierce, yet impossibly gentle when he whispered your name. His amber eyes held the wisdom of the forest and the ferocity of the storm.",
+    title: "CHAPTER 1 — THE HOWL THAT CALLS YOUR NAME",
+    text: "The Blood Moon rose like a burning wound in the sky. Crimson light slid across your room, and with it came a sound that froze your breath: A low, powerful howl—not distant, not wild… but personal. Like it was calling you. When you opened your window, a glowing silver paw-print appeared on the sill. Inside lay a folded piece of paper: 'Come to the Shadow Woods. The Alpha awaits.' Then a rush of cold wind made the curtains billow, and out of the shadows, he stepped. Tall. Broad. Half man, half something wild and ancient. His amber eyes glowed softly. His voice rumbled: 'You heard me.'",
     choices: [
-      { text: "Follow him into the woods", next: 1 },
-      { text: "Ask why he watches you", next: 2 },
+      { text: "Approach him", next: 1 },
+      { text: "Stay back", next: 2 },
     ],
   },
+  // Chapter 2A
   {
-    text: "Ancient trees embraced you as you walked deeper into moonlit wilderness. His presence was warmth in the cool night air. 'The pack has legends,' he said softly. 'Of a bond that transcends time. I never believed... until I saw you.'",
+    title: "CHAPTER 2A — HEAT OF THE WILD",
+    text: "You step toward him, unable to stop yourself. His hand reaches out—huge, warm, calloused—and gently closes over yours. Heat rushes up your arm like fire under your skin. His eyes widen slightly. 'Your heartbeat… I feel it.' He lifts your hand slowly, almost worshipfully, brushing it against his cheek. His skin is warm—hot—like a creature born from moonlight and fire. His voice is so soft it almost breaks: 'Come with me.' The shadows twist, branches forming a glowing path as he pulls you toward the forest.",
+    choices: [{ text: "Continue", next: 3 }],
+  },
+  // Chapter 2B
+  {
+    title: "CHAPTER 2B — THE GENTLE MONSTER",
+    text: "You step back, breath sharp. He doesn't chase you. Doesn't growl. Instead, he lowers his head in respect—something no wolf ever does. 'I forget,' he murmurs, 'that humans fear the wild.' There's no anger in his voice—only understanding. His glowing eyes flicker with something painful. Loneliness. Then he extends his hand, slower this time. Not demanding. Not dominating. Inviting. When you finally take it, warmth floods your palm. The world warps, shadows spiraling around you as the forest opens like a living gate.",
+    choices: [{ text: "Continue", next: 3 }],
+  },
+  // Chapter 3
+  {
+    title: "CHAPTER 3 — THE SHADOW WOODS",
+    text: "Trees stretch into the sky like cathedral pillars. Silver mist curls around your feet, whispering ancient secrets. Runes carved into bark glow faintly, pulsing in time with your heartbeat. Shadow-wolves watch silently from the edges—protective, not hostile. The Alpha walks beside you, silent, powerful. He leads you to a sacred clearing under the Blood Moon. 'These woods have guarded their secrets for thousands of years. They have never opened for a human… until you.' You ask him why. His voice trembles. 'Because your soul calls to mine. Because I've known your scent in my dreams. Because I chose you from the moment you existed.'",
     choices: [
-      { text: "Ask about the legend", next: 3 },
-      { text: "Take his hand", next: 4 },
+      { text: "Ask what he truly wants", next: 4 },
+      { text: "Hold his gaze in silence", next: 5 },
     ],
   },
+  // Chapter 4A
   {
-    text: "'Because you are mine,' he said with certainty that shook the stars. 'Not as possession, but as destiny. Every full moon, I've searched. Every howl carried your name. My soul recognized yours before we ever met.'",
+    title: "CHAPTER 4A — THE ALPHA'S CONFESSION",
+    text: "He exhales slowly, shoulders relaxing. 'I don't want a mate who bows. I want someone who stands beside me.' His fingers brush yours—gentle, careful. 'I want your fire. Your stubbornness. Your voice saying my name.' His breath warms your cheek. 'Let me be the one who protects your light.'",
+    choices: [{ text: "Continue", next: 6 }],
+  },
+  // Chapter 4B
+  {
+    title: "CHAPTER 4B — THE SILENT BOND",
+    text: "You don't speak. You only meet his eyes. The Alpha freezes. Then softens. Slowly, he takes your hand and places it over his chest. His heartbeat is strong. Leaping. Untamed. 'Your silence speaks louder than words.' He closes his eyes as if memorizing the moment. 'I will never harm you. I will only guard what is yours.'",
+    choices: [{ text: "Continue", next: 6 }],
+  },
+  // Chapter 5
+  {
+    title: "CHAPTER 5 — THE RUN OF DESTINY",
+    text: "The trees pull back, forming a long, glowing path. The Alpha looks at you with a question burning in his eyes. 'Run with me.' Before you can answer, he shifts—bones cracking, muscles expanding, fur sweeping over his body in a beautiful, terrifying transformation. He becomes a massive wolf, silver-black fur glowing under the moon. He lowers himself so you can climb onto his back.",
     choices: [
-      { text: "Tell him you feel it too", next: 4 },
-      { text: "Ask what happens now", next: 3 },
+      { text: "Climb onto his wolf form", next: 7 },
+      { text: "Ask him to shift back", next: 8 },
     ],
   },
+  // Chapter 6A
   {
-    text: "'They say when a wolf finds their true mate, the moon itself rejoices,' he explained, gesturing to the crimson sky. 'Tonight, she bleeds red to witness our union. Will you run with me? Will you let me show you freedom?'",
+    title: "CHAPTER 6A — THE RIDING OF THE WOLF",
+    text: "You climb onto him, fingers sinking into thick fur. The moment you hold him, he growls softly in approval. Then he runs. The wind tears past you. Moonlight blurs. The forest becomes streaks of silver and black. He is powerful. Fast. Alive. And every leap feels like flying.",
+    choices: [{ text: "Continue", next: 9 }],
+  },
+  // Chapter 6B
+  {
+    title: "CHAPTER 6B — THE ALPHA RETURNS",
+    text: "You touch his fur gently. 'Shift back.' He obeys instantly, transforming in a swirl of moonlight. His chest rises and falls quickly, eyes glowing with new intensity. 'You'd rather touch my hands than my fur?' A faint smile. A faint blush. He offers you his hand. 'Then run beside me.' And he runs with you, matching every step to yours, never letting you fall behind.",
+    choices: [{ text: "Continue", next: 9 }],
+  },
+  // Chapter 7
+  {
+    title: "CHAPTER 7 — THE MARK OF CHOICE",
+    text: "You reach a sacred stone altar bathed in moonlight. Three symbols glow: A paw-mark, A moon rune, A wildheart sigil. The Alpha explains: 'Choose one. It shapes our bond. Not forever—but tonight.'",
     choices: [
-      { text: "Say yes", next: 5 },
-      { text: "Ask if you'll change", next: 6 },
+      { text: "Paw-Mark (Protection Bond)", next: 10 },
+      { text: "Moon Rune (Emotional Bond)", next: 11 },
+      { text: "Wildheart Sigil (Destiny Bond)", next: 12 },
     ],
   },
+  // Chapter 8A
   {
-    text: "His fingers intertwined with yours, warm and strong. Electricity sparked between you—primal, magnetic, eternal. In his eyes, you saw not a beast, but a soul as deep as the forest itself. 'You are my moon,' he whispered. 'And I am your wolf.'",
+    title: "CHAPTER 8A — PROTECTION BOND",
+    text: "He places his forehead against yours. Warm. Safe. 'I will guard you with fang and claw.' A silver light wraps you both.",
+    choices: [{ text: "Continue", next: 13 }],
+  },
+  // Chapter 8B
+  {
+    title: "CHAPTER 8B — EMOTIONAL BOND",
+    text: "He takes your hands gently. His voice cracks— 'Let me feel what you feel.' Your emotions pulse together like shared moonlight.",
+    choices: [{ text: "Continue", next: 13 }],
+  },
+  // Chapter 8C
+  {
+    title: "CHAPTER 8C — DESTINY BOND",
+    text: "He looks shocked. Then reverent. 'This bond… is sacred.' Silver fire twines around your wrists, connecting you.",
+    choices: [{ text: "Continue", next: 13 }],
+  },
+  // Chapter 9
+  {
+    title: "CHAPTER 9 — THE ENEMY IN THE TREES",
+    text: "A branch snaps. Something moves. Shadow creatures—moonless wolves—emerge. The Alpha steps in front of you instantly. Growling. Snarling. Ready to tear the world apart for you. 'Stay behind me.' But your choice matters.",
     choices: [
-      { text: "Kiss him", next: 5 },
-      { text: "Rest your head on his shoulder", next: 5 },
+      { text: "Stand with him", next: 14 },
+      { text: "Let him fight alone", next: 15 },
     ],
   },
+  // Chapter 10A
   {
-    text: "The world melted away. His embrace was safety and wildness intertwined. Under the Blood Moon, surrounded by ancient trees, you understood—this was home. Not a place, but a soul. The forest sang with your heartbeats, now forever synchronized.",
+    title: "CHAPTER 10A — FIGHTING BESIDE THE ALPHA",
+    text: "You grab a glowing branch with runes. A weapon. The Alpha sees it—his eyes widen with pride. 'You fight with me.' Together, you attack. You burn through the shadows. You defend each other. He looks at you in awe.",
+    choices: [{ text: "Continue", next: 16 }],
+  },
+  // Chapter 10B
+  {
+    title: "CHAPTER 10B — THE ALPHA'S FURY",
+    text: "You step back instinctively. The Alpha explodes into motion—fur, fangs, moonlit fury. He tears through the enemies with terrifying speed. But afterward… his eyes soften. 'You don't have to fight to be strong.'",
+    choices: [{ text: "Continue", next: 16 }],
+  },
+  // Chapter 11
+  {
+    title: "CHAPTER 11 — THE WARMTH OF SAFETY",
+    text: "He pulls you close—whether you fought or not. His warmth surrounds you. His breathing steadies against your neck. 'You are safe.' For a moment, the world is quiet. Then he whispers: 'But there is more you must see.'",
+    choices: [{ text: "Continue", next: 17 }],
+  },
+  // Chapter 12
+  {
+    title: "CHAPTER 12 — THE HEART OF THE FOREST",
+    text: "He leads you to an ancient tree with silver veins. 'This tree sees truth.' It glows softly, revealing visions: Him as a lonely child-wolf. Him searching for you through dreams. Him calling your name under countless moons. And finally—You. Seeing him. Answering the call. Tears glow in his eyes.",
+    choices: [{ text: "Continue", next: 18 }],
+  },
+  // Chapter 13
+  {
+    title: "CHAPTER 13 — THE CONFESSION UNDER MOONLIGHT",
+    text: "The Alpha steps close—closer than ever. 'You are not just a visitor. You are not just a human.' His fingers brush your jaw. 'You are the one the forest chose for me.' Your heart stutters. He hears it. His breath trembles.",
+    choices: [{ text: "Continue", next: 19 }],
+  },
+  // Chapter 14
+  {
+    title: "CHAPTER 14 — THE LAST CHOICE",
+    text: "The Blood Moon pulses above you. He cups your face with both hands. 'Before the moon sets… choose how this night ends.'",
     choices: [
-      { text: "Continue to the puzzle", next: 'puzzle' },
+      { text: "Let him hold you", next: 20 },
+      { text: "Touch his cheek", next: 21 },
+      { text: "Kiss him", next: 22 },
     ],
   },
+  // Chapter 15A - Hold
   {
-    text: "'Change?' He smiled, showing a hint of fang. 'You'll remain yourself—only more. Senses sharper, spirit freer, heart fuller. The wolf within awakens only if you wish it. But our bond? That is eternal, in this form or any other.'",
-    choices: [
-      { text: "Accept the bond", next: 5 },
-    ],
+    title: "CHAPTER 15 — THE EMBRACE",
+    text: "You step into his arms, letting his warmth envelop you completely. He holds you like you're the most precious thing in all the worlds. His heartbeat thunders against your chest—wild, alive, yours. 'You are my moon,' he whispers into your hair. 'And I am your wolf, forever.'",
+    choices: [{ text: "Continue to the final gift", next: 23 }],
+  },
+  // Chapter 15B - Touch
+  {
+    title: "CHAPTER 15 — THE GENTLE TOUCH",
+    text: "Your fingers brush his cheek, and he leans into your palm with a shuddering breath. His eyes close, lashes dark against his skin. 'Your touch,' he murmurs, voice breaking, 'feels like coming home after centuries of wandering.' When his eyes open again, they glow with unshed tears and infinite tenderness.",
+    choices: [{ text: "Continue to the final gift", next: 23 }],
+  },
+  // Chapter 15C - Kiss
+  {
+    title: "CHAPTER 15 — THE KISS",
+    text: "You rise to meet him, and his lips find yours—warm, gentle, devastating. He kisses you like you're air itself, like you're the reason the moon rises. His hands cradle your face with trembling reverence. When you finally part, he rests his forehead against yours. 'You are the answer to every howl I've ever cried into the night.'",
+    choices: [{ text: "Continue to the final gift", next: 23 }],
+  },
+  // Final Chapter
+  {
+    title: "CHAPTER 15 — THE EPILOGUE GIFT",
+    text: "The moonlight swirls upward, shaping words in the air: 'This story was written for you…' A silver portal opens, glowing with ancient magic. The Alpha steps back slightly, his hand still holding yours. 'Inside waits your final gift,' he says softly. 'But know this—wherever you go, whatever world you return to… I will always be here. Under the Blood Moon. Waiting for you.' His eyes glow one last time. 'Until we meet again… my heart.'",
+    choices: [{ text: "Claim your gift", next: 'puzzle' }],
   },
 ];
 
