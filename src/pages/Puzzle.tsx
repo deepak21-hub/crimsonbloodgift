@@ -15,6 +15,8 @@ export const Puzzle = () => {
   const [pieces, setPieces] = useState<number[]>([]);
   const [selectedPiece, setSelectedPiece] = useState<number | null>(null);
   const [isComplete, setIsComplete] = useState(false);
+  const [draggedPiece, setDraggedPiece] = useState<number | null>(null);
+  const [dragOverPiece, setDragOverPiece] = useState<number | null>(null);
 
   useEffect(() => {
     // Shuffle puzzle pieces
@@ -50,6 +52,46 @@ export const Puzzle = () => {
     }
   };
 
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    if (isComplete) return;
+    setDraggedPiece(index);
+    e.dataTransfer.effectAllowed = 'move';
+    // Make the dragged element slightly transparent
+    (e.target as HTMLElement).style.opacity = '0.5';
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    (e.target as HTMLElement).style.opacity = '1';
+    setDraggedPiece(null);
+    setDragOverPiece(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    if (isComplete) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverPiece(index);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverPiece(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (isComplete || draggedPiece === null || draggedPiece === dropIndex) return;
+
+    // Swap pieces
+    const newPieces = [...pieces];
+    [newPieces[draggedPiece], newPieces[dropIndex]] = [
+      newPieces[dropIndex],
+      newPieces[draggedPiece],
+    ];
+    setPieces(newPieces);
+    setDraggedPiece(null);
+    setDragOverPiece(null);
+  };
+
   const getPieceStyle = (pieceValue: number) => {
     const row = Math.floor(pieceValue / PUZZLE_SIZE);
     const col = pieceValue % PUZZLE_SIZE;
@@ -79,7 +121,7 @@ export const Puzzle = () => {
           <p className="font-cursive text-2xl text-primary/80">
             {isComplete
               ? 'The rose blooms eternal...'
-              : 'Click two pieces to swap them'}
+              : 'Drag pieces or click two pieces to swap'}
           </p>
         </motion.div>
 
@@ -112,33 +154,45 @@ export const Puzzle = () => {
             {pieces.map((piece, index) => {
               const isSelected = selectedPiece === index;
               const isCorrect = piece === index;
+              const isDragging = draggedPiece === index;
+              const isDragOver = dragOverPiece === index;
 
               return (
-                <motion.button
+                <button
                   key={index}
                   onClick={() => handlePieceClick(index)}
-                  whileHover={!isComplete ? { scale: 1.05 } : {}}
-                  whileTap={!isComplete ? { scale: 0.95 } : {}}
+                  draggable={!isComplete}
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragEnd={handleDragEnd}
+                  onDragOver={(e) => handleDragOver(e, index)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, index)}
                   disabled={isComplete}
                   className={`w-24 h-24 md:w-32 md:h-32 rounded-md border-2 transition-all duration-300 overflow-hidden relative ${
                     isSelected
                       ? 'border-blood ring-4 ring-blood/50 z-10'
+                      : isDragOver && !isDragging
+                      ? 'border-accent ring-4 ring-accent/50 z-10'
                       : isComplete || isCorrect
                       ? 'border-primary/50'
                       : 'border-muted hover:border-primary'
+                  } ${isDragging ? 'opacity-50' : 'opacity-100'} ${
+                    !isComplete ? 'hover:scale-105 active:scale-95' : ''
                   }`}
                   style={{
                     ...getPieceStyle(piece),
                     boxShadow: isSelected
                       ? '0 0 30px hsl(0 100% 40% / 0.6)'
+                      : isDragOver && !isDragging
+                      ? '0 0 30px hsl(38 92% 50% / 0.6)'
                       : isComplete
                       ? '0 0 15px hsl(0 85% 35% / 0.4)'
                       : 'none',
-                    cursor: isComplete ? 'default' : 'pointer',
+                    cursor: isComplete ? 'default' : isDragging ? 'grabbing' : 'grab',
                   }}
                 >
                   {isSelected && !isComplete && (
-                    <div className="absolute inset-0 bg-blood/30 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-blood/30 flex items-center justify-center pointer-events-none">
                       <span className="text-white font-gothic text-2xl">✓</span>
                     </div>
                   )}
@@ -147,10 +201,10 @@ export const Puzzle = () => {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: index * 0.05 }}
-                      className="absolute inset-0 bg-gradient-to-br from-blood/20 via-transparent to-transparent"
+                      className="absolute inset-0 bg-gradient-to-br from-blood/20 via-transparent to-transparent pointer-events-none"
                     />
                   )}
-                </motion.button>
+                </button>
               );
             })}
           </div>
