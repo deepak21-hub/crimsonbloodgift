@@ -17,8 +17,8 @@ export const BackgroundEffects = () => {
       newParticles.push({
         id: i,
         left: Math.random() * 100,
-        duration: 10 + Math.random() * 15,
-        delay: Math.random() * 5,
+        duration: 15 + Math.random() * 20,
+        delay: Math.random() * 8,
         size: 2 + Math.random() * 4,
       });
     }
@@ -28,7 +28,7 @@ export const BackgroundEffects = () => {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden">
       {/* Fog overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/20 to-background/80 animate-pulse-glow" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/20 to-background/80" style={{ animation: 'pulse-glow 6s ease-in-out infinite' }} />
       
       {/* Floating embers */}
       {particles.map((particle) => (

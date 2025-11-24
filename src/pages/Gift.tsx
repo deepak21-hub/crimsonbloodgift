@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BackgroundEffects } from '@/components/BackgroundEffects';
@@ -6,15 +6,87 @@ import { PageTransition } from '@/components/PageTransition';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Download, Upload, Heart } from 'lucide-react';
+import { Download, Upload, Heart, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { toast } from 'sonner';
+import giftVideo from '@/assets/SpotiDownloader.com - bargad - sufr 2_2.mp4';
+import moonlitDesires from '@/assets/Moonlit Desires (1).mp3';
+import moonlitHearts from '@/assets/Moonlit Hearts.mp3';
+import eternalBite from '@/assets/Eternal Bite (1).mp3';
+
+const songs = [
+  { name: 'Moonlit Desires', file: moonlitDesires },
+  { name: 'Moonlit Hearts', file: moonlitHearts },
+  { name: 'Eternal Bite', file: eternalBite },
+];
 
 export const Gift = () => {
   const navigate = useNavigate();
   const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [videoUrl, setVideoUrl] = useState<string>('');
-  const [recipientName, setRecipientName] = useState('');
+  const [videoUrl, setVideoUrl] = useState<string>(giftVideo);
+  const [recipientName, setRecipientName] = useState('Aylin');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, []);
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(() => {});
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
+  };
+
+  const downloadMusic = () => {
+    const link = document.createElement('a');
+    link.href = songs[currentSongIndex].file;
+    link.download = `${songs[currentSongIndex].name}-Birthday-Gift.mp3`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('Music downloaded!');
+  };
+
+  const changeSong = (index: number) => {
+    const wasPlaying = isPlaying;
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    setCurrentSongIndex(index);
+    setIsPlaying(false);
+    setTimeout(() => {
+      if (wasPlaying && audioRef.current) {
+        audioRef.current.play().catch(() => {});
+        setIsPlaying(true);
+      }
+    }, 100);
+  };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -85,10 +157,10 @@ export const Gift = () => {
             className="text-center mb-12"
           >
             <h1 className="font-gothic text-6xl md:text-7xl text-glow mb-6">
-              Your Final Gift
+              Happy Birthday Aylin! 🎉
             </h1>
             <p className="font-cursive text-3xl text-primary/80 mb-4">
-              Under the Blood Moon
+              Your Special Day Under the Blood Moon
             </p>
             <div className="flex items-center justify-center gap-2 text-blood animate-pulse-glow">
               <Heart className="w-6 h-6 fill-current" />
@@ -106,11 +178,11 @@ export const Gift = () => {
             {/* Certificate */}
             <div className="mb-10 p-6 border-2 border-blood/50 rounded-lg bg-gradient-to-br from-blood/10 to-transparent">
               <h3 className="font-gothic text-2xl text-center mb-4 text-glow">
-                Bloodmoon Certificate of Destiny
+                🎂 Happy Birthday Certificate 🎂
               </h3>
               <div className="flex flex-col gap-4 items-center">
                 <Label htmlFor="name" className="font-cursive text-xl">
-                  This eternal bond is bestowed upon:
+                  This special birthday gift is for:
                 </Label>
                 <Input
                   id="name"
@@ -131,13 +203,77 @@ export const Gift = () => {
               </div>
             </div>
 
+            {/* Music Player */}
+            <div className="mb-10 p-6 border-2 border-primary/50 rounded-lg bg-gradient-to-br from-primary/10 to-transparent">
+              <audio ref={audioRef} src={songs[currentSongIndex].file} loop />
+              <h3 className="font-gothic text-2xl text-center mb-6 text-glow">
+                🎵 Your Birthday Song 🎵
+              </h3>
+              <div className="glass-morphism-card p-6 rounded-xl">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={togglePlay}
+                      className="w-14 h-14 bg-gradient-blood rounded-full flex items-center justify-center hover:brightness-110 transition-all moon-glow"
+                    >
+                      {isPlaying ? <Pause className="w-6 h-6 text-white" /> : <Play className="w-6 h-6 text-white ml-1" />}
+                    </button>
+                    <div>
+                      <select
+                        value={currentSongIndex}
+                        onChange={(e) => changeSong(Number(e.target.value))}
+                        className="font-gothic text-lg bg-transparent border-none text-glow cursor-pointer hover:text-primary transition-colors"
+                      >
+                        {songs.map((song, index) => (
+                          <option key={index} value={index} className="bg-card text-foreground">
+                            {song.name}
+                          </option>
+                        ))}
+                      </select>
+                      <p className="font-cursive text-sm text-muted-foreground">Birthday Special</p>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={downloadMusic}
+                    variant="outline"
+                    size="sm"
+                    className="border-primary hover:bg-primary/20"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={toggleMute}
+                    className="p-2 hover:bg-primary/20 rounded-full transition-all"
+                  >
+                    {isMuted ? <VolumeX className="w-5 h-5 text-primary" /> : <Volume2 className="w-5 h-5 text-primary" />}
+                  </button>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                    className="flex-1 h-2 bg-muted rounded-lg appearance-none cursor-pointer"
+                    style={{
+                      background: `linear-gradient(to right, hsl(0 85% 35%) 0%, hsl(0 85% 35%) ${volume * 100}%, hsl(0 20% 12%) ${volume * 100}%, hsl(0 20% 12%) 100%)`
+                    }}
+                  />
+                  <span className="text-sm text-muted-foreground w-12 text-right">{Math.round(volume * 100)}%</span>
+                </div>
+              </div>
+            </div>
+
             {/* Video Upload/Display */}
             <div className="mb-8">
               <h3 className="font-gothic text-2xl text-center mb-6 text-glow">
-                Your Video Gift
+                🎁 Your Birthday Video Gift 🎁
               </h3>
 
-              {!videoFile ? (
+              {!videoUrl ? (
                 <div className="flex flex-col items-center gap-6">
                   <div
                     onClick={() => fileInputRef.current?.click()}
@@ -167,32 +303,42 @@ export const Gift = () => {
                 >
                   <div className="relative rounded-lg overflow-hidden border-2 border-primary moon-glow">
                     <video
-                      src={videoUrl}
+                      src={videoUrl || giftVideo}
                       controls
                       className="w-full aspect-video bg-black"
                     />
                   </div>
                   <div className="flex flex-col md:flex-row gap-4 justify-center">
                     <Button
-                      onClick={handleDownload}
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = videoUrl || giftVideo;
+                        link.download = 'bloodmoon-gift.mp4';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        toast.success('Video downloaded!');
+                      }}
                       size="lg"
                       className="font-cursive text-xl bg-gradient-blood border-2 border-primary text-primary-foreground hover:brightness-110 text-glow"
                     >
                       <Download className="w-5 h-5 mr-2" />
                       Download Your Video Gift ❤️
                     </Button>
-                    <Button
-                      onClick={() => {
-                        setVideoFile(null);
-                        setVideoUrl('');
-                      }}
-                      variant="outline"
-                      size="lg"
-                      className="font-cursive text-xl border-primary hover:bg-primary/20"
-                    >
-                      <Upload className="w-5 h-5 mr-2" />
-                      Upload Different Video
-                    </Button>
+                    {videoFile && (
+                      <Button
+                        onClick={() => {
+                          setVideoFile(null);
+                          setVideoUrl(giftVideo);
+                        }}
+                        variant="outline"
+                        size="lg"
+                        className="font-cursive text-xl border-primary hover:bg-primary/20"
+                      >
+                        <Upload className="w-5 h-5 mr-2" />
+                        Upload Different Video
+                      </Button>
+                    )}
                   </div>
                 </motion.div>
               )}
@@ -201,12 +347,12 @@ export const Gift = () => {
             {/* Heartfelt message section */}
             <div className="p-6 border-2 border-blood/30 rounded-lg bg-gradient-to-br from-blood/5 to-transparent">
               <p className="font-cursive text-xl text-center leading-relaxed text-foreground/90">
-                "In the crimson light of the Blood Moon, under stars that have
-                witnessed countless eternities, this gift is yours. A memory
-                forever captured, a moment made eternal. Like the bond between
-                vampire and mortal, wolf and moon—what we share transcends time
-                itself. You are the dawn in my endless night, the heartbeat in
-                my immortal existence. This is for you, forever."
+                "Happy Birthday, Aylin! 🎂✨ On this special day under the crimson Blood Moon,
+                I wanted to give you something as unique and magical as you are.
+                May this year bring you endless joy, unforgettable adventures,
+                and dreams that come true. Like the eternal bond between vampire and wolf,
+                our friendship is timeless. You light up every moment, and today we celebrate YOU!
+                Here's to another amazing year of your incredible journey. Enjoy your special gift! 🎉💝"
               </p>
               <div className="flex justify-center gap-2 mt-6">
                 <Heart className="w-5 h-5 text-blood fill-current animate-heartbeat" />
@@ -241,7 +387,7 @@ export const Gift = () => {
             <div className="text-4xl animate-pulse-glow" style={{ animationDelay: '0.5s' }}>🦇</div>
           </div>
           <p className="font-cursive text-xl text-muted-foreground">
-            Under the Bloodmoon, your story is eternal.
+            Happy Birthday, Aylin! May your day be as magical as the Bloodmoon. 🎂🌙
           </p>
         </motion.footer>
       </div>

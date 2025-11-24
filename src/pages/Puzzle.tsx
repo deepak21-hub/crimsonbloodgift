@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { PageTransition } from '@/components/PageTransition';
 import { Button } from '@/components/ui/button';
+import { Volume2, VolumeX } from 'lucide-react';
 import { toast } from 'sonner';
 import bloodRose from '@/assets/blood-rose.jpg';
+import puzzleMusic from '@/assets/Eternal Bite (1).mp3';
 
 const PUZZLE_SIZE = 3;
 const TOTAL_PIECES = PUZZLE_SIZE * PUZZLE_SIZE;
@@ -17,6 +19,20 @@ export const Puzzle = () => {
   const [isComplete, setIsComplete] = useState(false);
   const [draggedPiece, setDraggedPiece] = useState<number | null>(null);
   const [dragOverPiece, setDragOverPiece] = useState<number | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3;
+      audioRef.current.play().catch(() => {});
+    }
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     // Shuffle puzzle pieces
@@ -107,6 +123,18 @@ export const Puzzle = () => {
 
   return (
     <PageTransition>
+      <audio ref={audioRef} src={puzzleMusic} loop muted={isMuted} />
+      <button
+        onClick={() => {
+          setIsMuted(!isMuted);
+          if (audioRef.current && isMuted) {
+            audioRef.current.play().catch(() => {});
+          }
+        }}
+        className="fixed top-4 right-4 z-50 p-3 bg-card/80 backdrop-blur-md border-2 border-primary rounded-full hover:bg-card transition-all"
+      >
+        {isMuted ? <VolumeX className="w-6 h-6 text-primary" /> : <Volume2 className="w-6 h-6 text-primary" />}
+      </button>
       <div className="min-h-screen relative flex flex-col items-center justify-center overflow-hidden px-4 py-20">
         <BackgroundEffects />
 

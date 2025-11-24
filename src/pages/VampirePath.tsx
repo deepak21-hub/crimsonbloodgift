@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { PageTransition } from '@/components/PageTransition';
 import { Button } from '@/components/ui/button';
+import { Volume2, VolumeX } from 'lucide-react';
+import vampireMusic from '@/assets/Moonlit Desires (1).mp3';
 
 const storyStages = [
   // Chapter 1 - The Blood Moon Rises
@@ -125,17 +127,31 @@ const storyStages = [
   },
   // Chapter 10 - The Final Gift
   {
-    title: "CHAPTER 10 — THE FINAL GIFT",
-    text: "The sky brightens as the Blood Moon reaches its peak.\n\nThe roses around you glow. The Court hums with ancient magic.\n\nCaelum steps back slightly, lifting his hand.\n\nA swirl of crimson petals gathers into a glowing, floating doorway.\n\nInside it—A video. Your gift.\n\n\"This world,\" he says softly, \"I created for you tonight. But this… This is my final offering.\"\n\nHe holds your hand one last time.\n\n\"Take this gift,\" he whispers. \"And know… under the Blood Moon, you are not alone.\"\n\nThe petals burst into red light—revealing your downloadable video gift.\n\nCaelum's final words echo:\n\n\"Until fate brings you back to me… my Crimson Heart.\"",
+    title: "CHAPTER 10 — THE BIRTHDAY GIFT",
+    text: "The sky brightens as the Blood Moon reaches its peak.\n\nThe roses around you glow. The Court hums with ancient magic.\n\nCaelum steps back slightly, lifting his hand.\n\nA swirl of crimson petals gathers into a glowing, floating doorway.\n\nInside it—A video. Your birthday gift.\n\n\"This world,\" he says softly, \"I created for your special day, Aylin. But this… This is my final offering.\"\n\nHe holds your hand one last time.\n\n\"Happy Birthday,\" he whispers. \"May this year bring you magic, joy, and endless wonder. Under the Blood Moon, you are celebrated.\"\n\nThe petals burst into red light—revealing your birthday video gift.\n\nCaelum's final words echo:\n\n\"Until we meet again… Happy Birthday, my Crimson Heart. 🎂✨\"",
     choices: [
-      { text: "Claim Your Gift 🌹", next: 'puzzle' },
+      { text: "Claim Your Birthday Gift 🎂🌹", next: 'puzzle' },
     ],
   },
 ];
 
 export const VampirePath = () => {
   const [currentStage, setCurrentStage] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
   const navigate = useNavigate();
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3;
+      audioRef.current.play().catch(() => {});
+    }
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
 
   const handleChoice = (next: number | string) => {
     if (next === 'puzzle') {
@@ -149,6 +165,18 @@ export const VampirePath = () => {
 
   return (
     <PageTransition>
+      <audio ref={audioRef} src={vampireMusic} loop muted={isMuted} />
+      <button
+        onClick={() => {
+          setIsMuted(!isMuted);
+          if (audioRef.current && isMuted) {
+            audioRef.current.play().catch(() => {});
+          }
+        }}
+        className="fixed top-4 right-4 z-50 p-3 bg-card/80 backdrop-blur-md border-2 border-primary rounded-full hover:bg-card transition-all"
+      >
+        {isMuted ? <VolumeX className="w-6 h-6 text-primary" /> : <Volume2 className="w-6 h-6 text-primary" />}
+      </button>
       <div className="min-h-screen relative flex items-center justify-center overflow-hidden px-4">
         <BackgroundEffects />
         

@@ -26,12 +26,14 @@ export const Intro = () => {
           transition={{ delay: 0.5, duration: 1 }}
           className="relative z-10 text-center mb-16"
         >
-          <h1 className="font-gothic text-7xl md:text-8xl text-glow mb-4 tracking-wider">
-            Bloodmoon Bond
-          </h1>
-          <p className="font-cursive text-3xl text-primary/80">
-            Choose your destiny under the Blood Moon
-          </p>
+          <div className="glass-morphism p-8 rounded-2xl">
+            <h1 className="font-gothic text-7xl md:text-8xl text-glow mb-4 tracking-wider">
+              Happy Birthday Aylin! 🎉
+            </h1>
+            <p className="font-cursive text-3xl text-primary/90">
+              Choose your romantic adventure under the Blood Moon
+            </p>
+          </div>
         </motion.div>
 
         {/* Character Selection */}
@@ -45,7 +47,7 @@ export const Intro = () => {
             onClick={() => navigate('/vampire')}
             className="cursor-pointer group relative"
           >
-            <div className="w-64 h-96 bg-gradient-to-b from-blood/30 to-secondary border-2 border-primary rounded-lg deep-shadow overflow-hidden">
+            <div className="w-64 h-96 glass-morphism-card border-2 border-primary/50 rounded-lg deep-shadow overflow-hidden">
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
                 <div className="w-32 h-32 mb-6 rounded-full bg-blood/40 flex items-center justify-center moon-glow group-hover:animate-pulse-glow">
                   <div className="text-6xl">🦇</div>
@@ -71,7 +73,7 @@ export const Intro = () => {
             onClick={() => navigate('/wolf')}
             className="cursor-pointer group relative"
           >
-            <div className="w-64 h-96 bg-gradient-to-b from-secondary to-muted border-2 border-accent rounded-lg deep-shadow overflow-hidden">
+            <div className="w-64 h-96 glass-morphism-card border-2 border-accent/50 rounded-lg deep-shadow overflow-hidden">
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
                 <div className="w-32 h-32 mb-6 rounded-full bg-accent/30 flex items-center justify-center group-hover:animate-pulse-glow" style={{ boxShadow: '0 0 40px hsl(38 92% 50% / 0.4)' }}>
                   <div className="text-6xl">🐺</div>
@@ -90,14 +92,18 @@ export const Intro = () => {
         </div>
 
         {/* Floating instruction */}
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
-          className="relative z-10 mt-16 font-cursive text-xl text-muted-foreground animate-float"
+          className="relative z-10 mt-16"
         >
-          Click to begin your eternal romance...
-        </motion.p>
+          <div className="glass-morphism-subtle px-6 py-3 rounded-full">
+            <p className="font-cursive text-xl text-foreground/90">
+              Click to begin your birthday adventure... 🎂✨
+            </p>
+          </div>
+        </motion.div>
       </div>
     </PageTransition>
   );

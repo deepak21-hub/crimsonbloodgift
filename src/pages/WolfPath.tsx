@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { PageTransition } from '@/components/PageTransition';
 import { Button } from '@/components/ui/button';
+import { Volume2, VolumeX } from 'lucide-react';
+import wolfMusic from '@/assets/Moonlit Hearts.mp3';
 
 const storyStages = [
   // Chapter 1
@@ -166,15 +168,29 @@ const storyStages = [
   },
   // Final Chapter
   {
-    title: "CHAPTER 15 — THE EPILOGUE GIFT",
-    text: "The moonlight swirls upward, shaping words in the air: 'This story was written for you…' A silver portal opens, glowing with ancient magic. The Alpha steps back slightly, his hand still holding yours. 'Inside waits your final gift,' he says softly. 'But know this—wherever you go, whatever world you return to… I will always be here. Under the Blood Moon. Waiting for you.' His eyes glow one last time. 'Until we meet again… my heart.'",
-    choices: [{ text: "Claim your gift", next: 'puzzle' }],
+    title: "CHAPTER 15 — THE BIRTHDAY GIFT",
+    text: "The moonlight swirls upward, shaping words in the air: 'Happy Birthday, Aylin…' A silver portal opens, glowing with ancient magic. The Alpha steps back slightly, his hand still holding yours. 'Inside waits your birthday gift,' he says softly. 'This story, this night, this magic—all created to celebrate you.' His eyes glow with warmth. 'May your new year be filled with wild adventures, fierce joy, and moonlit dreams.' He smiles. 'Happy Birthday, my heart. 🎂🐺✨'",
+    choices: [{ text: "Claim your birthday gift 🎂", next: 'puzzle' }],
   },
 ];
 
 export const WolfPath = () => {
   const [currentStage, setCurrentStage] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
   const navigate = useNavigate();
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3;
+      audioRef.current.play().catch(() => {});
+    }
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
 
   const handleChoice = (next: number | string) => {
     if (next === 'puzzle') {
@@ -188,6 +204,18 @@ export const WolfPath = () => {
 
   return (
     <PageTransition>
+      <audio ref={audioRef} src={wolfMusic} loop muted={isMuted} />
+      <button
+        onClick={() => {
+          setIsMuted(!isMuted);
+          if (audioRef.current && isMuted) {
+            audioRef.current.play().catch(() => {});
+          }
+        }}
+        className="fixed top-4 right-4 z-50 p-3 bg-card/80 backdrop-blur-md border-2 border-accent rounded-full hover:bg-card transition-all"
+      >
+        {isMuted ? <VolumeX className="w-6 h-6 text-accent" /> : <Volume2 className="w-6 h-6 text-accent" />}
+      </button>
       <div className="min-h-screen relative flex items-center justify-center overflow-hidden px-4">
         <BackgroundEffects />
         
